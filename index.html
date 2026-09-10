@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Risheen — Notes on the Web</title>
+<title>Chammanur — a village in Punnayoorkulam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -52,6 +52,7 @@
   }
 
   header.site{
+    position:relative;
     padding:32px 0 24px;
     display:flex;
     align-items:center;
@@ -91,6 +92,75 @@
   }
 
   nav.site a:hover::after{ transform:scaleX(1); }
+
+  /* ---------- mobile nav toggle ---------- */
+
+  .nav-toggle{
+    display:none;
+    width:34px;
+    height:34px;
+    padding:0;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after{
+    content:'';
+    display:block;
+    width:20px;
+    height:1.5px;
+    background:var(--ink);
+    position:relative;
+    transition: transform .25s ease, opacity .2s ease, background .2s ease;
+  }
+
+  .nav-toggle span::before{ position:absolute; top:-6px; }
+  .nav-toggle span::after{ position:absolute; top:6px; }
+
+  header.site.nav-open .nav-toggle span{ background:transparent; }
+  header.site.nav-open .nav-toggle span::before{ top:0; transform:rotate(45deg); background:var(--ink); }
+  header.site.nav-open .nav-toggle span::after{ top:0; transform:rotate(-45deg); background:var(--ink); }
+
+  @media (max-width: 680px){
+    .nav-toggle{ display:flex; }
+
+    nav.site{
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      max-height:0;
+      overflow:hidden;
+      transition: max-height .28s ease;
+      z-index:20;
+    }
+
+    header.site.nav-open nav.site{ max-height:340px; }
+
+    nav.site ul{
+      flex-direction:column;
+      gap:0;
+      padding:8px 28px 18px;
+    }
+
+    nav.site li{ border-bottom:1px solid var(--line); }
+    nav.site li:last-child{ border-bottom:none; }
+
+    nav.site a{
+      display:block;
+      padding:13px 0;
+      font-size:0.98rem;
+    }
+
+    nav.site a::after{ display:none; }
+  }
 
   /* ---------- banner ---------- */
 
@@ -221,6 +291,7 @@
     align-items:baseline;
     justify-content:space-between;
     margin:56px 0 8px;
+    gap:12px;
   }
 
   .section-head h2{
@@ -232,6 +303,7 @@
   .section-head span{
     font-size:0.85rem;
     color:var(--ink-soft);
+    white-space:nowrap;
   }
 
   /* ---------- post index ---------- */
@@ -341,6 +413,11 @@
 
   @media (max-width:560px){
     .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width:400px){
+    .gallery-grid{ gap:8px; }
+    .gallery-grid .tile span{ font-size:0.76rem; padding:9px; }
   }
 
   /* ---------- voices ---------- */
@@ -530,13 +607,21 @@
 
   /* ---------- responsive ---------- */
 
+  @media (max-width: 680px){
+    header.site{ padding:24px 0 18px; }
+  }
+
   @media (max-width: 560px){
+    body{ font-size:16px; }
+    .wrap{ padding:0 20px; }
+    .hero{ padding:32px 0 40px; }
+    .section-head{ margin:44px 0 6px; }
     .post{ grid-template-columns: 1fr; gap:6px; }
     .post .date{ padding-top:0; }
     .about{ grid-template-columns: 56px 1fr; }
     .avatar{ width:52px; height:52px; font-size:1.1rem; }
-    nav.site ul{ gap:16px; }
     footer{ flex-direction:column; gap:6px; }
+    .contact{ margin-top:40px; }
   }
 </style>
 </head>
@@ -544,13 +629,17 @@
 
 <div class="wrap">
 
-  <header class="site">
-    <a class="mark" href="#top">Risheen ✳</a>
-    <nav class="site">
+  <header class="site" id="siteHeader">
+    <a class="mark" href="#top">chammanur ✳</a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="siteNav">
+      <span></span>
+    </button>
+
+    <nav class="site" id="siteNav">
       <ul>
         <li><a href="#writing">Writing</a></li>
         <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#voices">Voices</a></li>
         <li><a href="#events">Events</a></li>
         <li><a href="#submit">Submit</a></li>
         <li><a href="#about">About</a></li>
@@ -638,66 +727,176 @@
   </div>
 
   <section class="hero" id="top">
-    <div class="kicker">A personal notebook on building for the web</div>
-    <h1>Slower thoughts on <em>fast-moving</em> code.</h1>
-    <p>I'm Risheen — a front-end developer and freelance web designer. This is where I write about the sites I build, the mistakes I learn from, and the small decisions that make interfaces feel right.</p>
+    <div class="kicker">A window into life in Punnayoorkulam, Kerala</div>
+    <h1>Stories from the heart of <em>Chammanur</em>.</h1>
+    <p>Chammanur is a small village in Punnayoorkulam, on the coast of Thrissur district — known for its paddy fields, its temple festivals, and the people who have called it home for generations. This is where we keep its stories, its voices, and its everyday life.</p>
   </section>
 
-  <section id="writing">
-    <div class="section-head">
-      <h2>Writing</h2>
-      <span>18 posts</span>
+<section id="writing" class="village-stories"> <div class="section-head"> <div> <span class="eyebrow">From the people</span> <h2>Stories of Chammanur</h2> </div> <span class="section-note">Voices · Memories · Poems</span> </div> <div class="story-grid">
+<!-- Story 1 -->
+<article class="story-card featured">
+  <div class="story-meta">
+    <span class="story-type">Memory</span>
+    <span class="story-year">2026</span>
+  </div>
+
+  <h3>When the Pooram began at dawn</h3>
+
+  <p class="story-by">
+    By <strong>Raman Nair</strong>
+    <span>·</span>
+    Chammanur
+  </p>
+
+  <div class="story-content">
+    <p>
+      I still remember the sound of the chenda before I could see the
+      procession. In those days, the whole village seemed to wake up
+      together. People came walking from every direction, carrying
+      little lamps and talking about the day's celebrations...
+    </p>
+
+    <div class="story-extra">
+      <p>
+        The old tank was where everyone gathered. Children stood on the
+        edges trying to see above the crowd, while the older men found
+        their familiar places beneath the trees. There were fewer
+        vehicles, fewer loudspeakers and, perhaps, fewer distractions.
+        But somehow the morning felt bigger.
+      </p>
+
+      <p>
+        Even now, when I hear the first chenda from a distance, I am
+        taken back to those mornings. The village has changed, but that
+        sound has not.
+      </p>
     </div>
+  </div>
 
-    <ul class="post-list">
+  <button class="expand-story" type="button" aria-expanded="false">
+    <span>Read full story</span>
+    <span class="expand-icon">+</span>
+  </button>
+</article>
 
-      <li class="post featured">
-        <div class="date">Sep 2026</div>
-        <div>
-          <h3><a class="title-link" href="#">Why I stopped using component libraries for client sites</a></h3>
-          <p>Every project I shipped faster this way ended up looking like every other project. A note on rebuilding the habit of designing from the content out.</p>
-          <span class="tag">Design systems</span>
-        </div>
-      </li>
 
-      <li class="post">
-        <div class="date">Aug 2026</div>
-        <div>
-          <h3><a class="title-link" href="#">Ecommerce checkouts nobody asked to make harder</a></h3>
-          <p>Notes from three freelance builds on where checkout flows quietly lose people, and the one field that fixed a client's cart abandonment.</p>
-          <span class="tag">Ecommerce</span>
-        </div>
-      </li>
+<!-- Story 2 -->
+<article class="story-card">
+  <div class="story-meta">
+    <span class="story-type">Village Story</span>
+    <span class="story-year">2026</span>
+  </div>
 
-      <li class="post">
-        <div class="date">Jul 2026</div>
-        <div>
-          <h3><a class="title-link" href="#">A teacher's approach to writing documentation</a></h3>
-          <p>Two years in a classroom taught me more about explaining things clearly than any style guide has. Some of that carried into how I write READMEs now.</p>
-          <span class="tag">Process</span>
-        </div>
-      </li>
+  <h3>The last paddy field near our house</h3>
 
-      <li class="post">
-        <div class="date">Jun 2026</div>
-        <div>
-          <h3><a class="title-link" href="#">What testing software taught me about writing it</a></h3>
-          <p>Before I built interfaces, I broke them for a living. That habit of distrust turned out to be useful on the other side of the screen too.</p>
-          <span class="tag">Reflection</span>
-        </div>
-      </li>
+  <p class="story-by">
+    By <strong>Leela Krishnan</strong>
+    <span>·</span>
+    Chammanur
+  </p>
 
-      <li class="post">
-        <div class="date">May 2026</div>
-        <div>
-          <h3><a class="title-link" href="#">Pricing freelance web work without a rate card</a></h3>
-          <p>How I actually quote projects now, after underpricing my first few and overcorrecting on the next few.</p>
-          <span class="tag">Freelance</span>
-        </div>
-      </li>
+  <div class="story-content">
+    <p>
+      There used to be water everywhere after the first rain. My mother
+      knew exactly when the field would be ready, and my father could
+      tell from the colour of the soil whether the season would be good.
+    </p>
 
-    </ul>
-  </section>
+    <div class="story-extra">
+      <p>
+        Today, most of that field has become houses. We still have one
+        small patch behind our home, and every year we try to cultivate
+        it. It is not much, but when the green shoots appear, the place
+        feels like the Chammanur I remember.
+      </p>
+    </div>
+  </div>
+
+  <button class="expand-story" type="button" aria-expanded="false">
+    <span>Read full story</span>
+    <span class="expand-icon">+</span>
+  </button>
+</article>
+
+
+<!-- Poem -->
+<article class="story-card poem-card">
+  <div class="story-meta">
+    <span class="story-type">Poem</span>
+    <span class="story-year">2026</span>
+  </div>
+
+  <h3>My village after rain</h3>
+
+  <p class="story-by">
+    By <strong>Anitha Menon</strong>
+    <span>·</span>
+    Chammanur
+  </p>
+
+  <div class="poem">
+    <p>
+      After the rain,<br>
+      the canal remembers the sky.<br>
+      Coconut leaves whisper<br>
+      above the quiet road.
+    </p>
+
+    <div class="story-extra">
+      <p>
+        Somewhere a bicycle passes,<br>
+        a kettle begins to sing,<br>
+        and the village slowly opens<br>
+        its wet green eyes.
+      </p>
+    </div>
+  </div>
+
+  <button class="expand-story" type="button" aria-expanded="false">
+    <span>Read full poem</span>
+    <span class="expand-icon">+</span>
+  </button>
+</article>
+
+
+<!-- Story 4 -->
+<article class="story-card">
+  <div class="story-meta">
+    <span class="story-type">Memory</span>
+    <span class="story-year">2025</span>
+  </div>
+
+  <h3>The school under the tiled roof</h3>
+
+  <p class="story-by">
+    By <strong>Joseph Mathew</strong>
+    <span>·</span>
+    Chammanur
+  </p>
+
+  <div class="story-content">
+    <p>
+      Our classroom had two windows, three long benches and a blackboard
+      that was never completely black. We complained about the heat
+      then. Now, strangely, I miss it.
+    </p>
+
+    <div class="story-extra">
+      <p>
+        Every generation seems to leave something behind in that old
+        building. Names scratched into desks, photographs on the walls,
+        and memories that return whenever former students meet.
+      </p>
+    </div>
+  </div>
+
+  <button class="expand-story" type="button" aria-expanded="false">
+    <span>Read full story</span>
+    <span class="expand-icon">+</span>
+  </button>
+</article>
+
+</div> </section> <style> .village-stories { padding: 80px 0; } .village-stories .section-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 42px; } .village-stories .eyebrow { display: block; margin-bottom: 8px; color: #8b6b3f; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; } .village-stories h2 { margin: 0; font-size: clamp(32px, 5vw, 54px); line-height: 1; letter-spacing: -.04em; } .section-note { color: #888; font-size: 13px; letter-spacing: .04em; } .story-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; } .story-card { position: relative; padding: 30px; border: 1px solid #e8e5de; border-radius: 20px; background: #fff; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; } .story-card:hover { transform: translateY(-3px); border-color: #d8d1c4; box-shadow: 0 14px 40px rgba(30, 25, 15, .07); } .story-card.featured { grid-column: span 2; background: #f6f3ec; border-color: #eee8db; } .story-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; } .story-type { padding: 6px 10px; border-radius: 999px; background: #ebe5d9; color: #66553c; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; } .story-year { color: #999; font-size: 12px; } .story-card h3 { max-width: 700px; margin: 0 0 9px; font-size: clamp(22px, 3vw, 32px); line-height: 1.12; letter-spacing: -.025em; } .story-by { margin: 0 0 22px; color: #777; font-size: 13px; } .story-by span { margin: 0 6px; color: #bbb; } .story-content p, .poem p { max-width: 720px; margin: 0; color: #555; font-size: 15px; line-height: 1.8; } .story-extra { display: none; margin-top: 16px; } .story-extra p + p { margin-top: 16px; } .story-card.expanded .story-extra { display: block; animation: storyReveal .35s ease; } .expand-story { display: inline-flex; align-items: center; gap: 10px; margin-top: 24px; padding: 0; border: 0; background: transparent; color: #222; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; } .expand-icon { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid #d7d2c8; border-radius: 50%; font-size: 17px; font-weight: 400; transition: transform .25s ease; } .story-card.expanded .expand-icon { transform: rotate(45deg); } .poem { padding-left: 20px; border-left: 2px solid #d8cdbb; } .poem p { font-family: Georgia, serif; font-size: 17px; line-height: 1.9; color: #4c493f; } @keyframes storyReveal { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } } @media (max-width: 700px) { .village-stories { padding: 55px 0; } .village-stories .section-head { display: block; margin-bottom: 28px; } .section-note { display: block; margin-top: 12px; } .story-grid { grid-template-columns: 1fr; } .story-card.featured { grid-column: span 1; } .story-card { padding: 23px; border-radius: 16px; } } </style> <script> document.querySelectorAll('.expand-story').forEach(button => { button.addEventListener('click', () => { const card = button.closest('.story-card'); const expanded = card.classList.toggle('expanded'); button.setAttribute('aria-expanded', expanded); button.querySelector('span:first-child').textContent = expanded ? 'Show less' : button.textContent.includes('poem') ? 'Read full poem' : 'Read full story'; }); }); </script>
 
   <section id="gallery">
     <div class="section-head">
@@ -736,21 +935,7 @@
     </div>
   </section>
 
-  <section id="events">
-    <div class="section-head">
-      <h2>Culture &amp; Festivals</h2>
-      <span>Events gallery</span>
-    </div>
-    <div class="gallery-grid events">
-      <div class="tile"><span>Temple Pooram procession</span></div>
-      <div class="tile"><span>Onam sadya at the community hall</span></div>
-      <div class="tile"><span>Vishukkani at sunrise</span></div>
-      <div class="tile"><span>Thira performance by the pond</span></div>
-      <div class="tile"><span>Snake boat practice on the canal</span></div>
-      <div class="tile"><span>Village council annual gathering</span></div>
-    </div>
-  </section>
-
+ 
   <section id="submit">
     <div class="section-head">
       <h2>Submit an article</h2>
@@ -781,36 +966,50 @@
 
   <section id="about">
     <div class="section-head">
-      <h2>About</h2>
+      <h2>About Chammanur</h2>
     </div>
     <div class="about">
-      <div class="avatar">R</div>
+      <div class="avatar">C</div>
       <div>
-        <p>I build front-end interfaces and freelance on custom ecommerce and non-ecommerce sites. Before that I taught higher secondary students, tested software at Manappuram, and interned across PHP and .NET stacks — a fairly winding way to end up writing HTML for a living.</p>
-        <p>I hold an MCA from Vidya Engineering College and a BCA from Calicut University. These days most of my work happens for clients, and this notebook is where the leftover thinking goes. <a class="inline" href="#contact">Get in touch</a> if you'd like to work together.</p>
+        <p>Chammanur is a small village within Punnayoorkulam, on the coastal belt of Thrissur district, Kerala — a place of paddy fields, coconut groves, and a backwater canal that shapes the rhythm of daily life. The Punnayoorkulam Bhagavathy Temple, one of the region's oldest, sits at the centre of the village's cultural life and draws visitors from across Kerala during its annual festival.</p>
+        <p>Most families here have farmed or fished this land for generations, though many young people now work in Kochi, Bangalore, or the Gulf. This site exists to keep the village connected — its stories, its elders' memories, its festivals, and the everyday moments that don't usually get written down. <a class="inline" href="#submit">Share a story</a> if you have one to tell.</p>
       </div>
     </div>
   </section>
 
   <section class="contact" id="contact">
-    <h2>Have a project, or just a question?</h2>
-    <p style="color:var(--ink-soft); max-width:48ch;">I take on a small number of freelance builds at a time. The fastest way to reach me is email.</p>
+    <h2>Have a story, a correction, or a question?</h2>
+    <p style="color:var(--ink-soft); max-width:48ch;">This is a community effort — get in touch if you'd like to contribute.</p>
     <div class="contact-links">
-      <a href="mailto:hello@risheen.dev">hello@risheen.dev</a>
-      <a href="#">GitHub</a>
-      <a href="#">LinkedIn</a>
-      <a href="#">Twitter / X</a>
+     
     </div>
   </section>
 
   <footer>
-    <span>© 2026 Risheen</span>
-    <span>Built by hand, no template</span>
+    <span>© 2026 Chammanur, Punnayoorkulam</span>
+    <span>Made with care, for the village</span>
   </footer>
 
 </div>
 
 <script>
+  // Mobile nav toggle
+  const header = document.getElementById('siteHeader');
+  const navToggle = document.getElementById('navToggle');
+  const siteNav = document.getElementById('siteNav');
+
+  navToggle.addEventListener('click', function(){
+    const isOpen = header.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  siteNav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      header.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
   // Sends the article submission via WhatsApp click-to-chat.
   // Replace WHATSAPP_NUMBER below with the real number in international
   // format, no + or spaces (e.g. 919876543210 for a +91 India number).
